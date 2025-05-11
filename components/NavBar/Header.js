@@ -91,7 +91,7 @@ const NavBar = () => {
         )}
       </ul>
 
-      <div className='nav-func-btn block'>
+      <div className='nav-func-btn flex items-center'>
         <ThemeSwitcher />
         <LangSwitcher />
       </div>
