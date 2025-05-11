@@ -2,7 +2,7 @@ import Container from '@/components/Container'
 import BlogPost from '@/components/BlogPost'
 import NotesHero from '@/components/Hero/Notes'
 import Pagination from '@/components/Pagination'
-import { getAllPosts, getPostBlocks } from '@/lib/notion'
+import { getAllPosts } from '@/lib/notion'
 import BLOG from '@/blog.config'
 
 export async function getStaticProps() {
@@ -11,18 +11,6 @@ export async function getStaticProps() {
     onlyPost: true,
     tagFilter: 'notes' // 假设我们在Notion中用"notes"标签标记笔记类文章
   })
-
-  // 获取页面标题区域的内容（Hero区块）
-  const heros = await getAllPosts({ onlyHidden: true })
-  const hero = heros.find((t) => t.slug === 'notes')
-
-  let blockMap
-  try {
-    blockMap = await getPostBlocks(hero.id)
-  } catch (err) {
-    console.error(err)
-    // 错误处理
-  }
 
   // 分页处理
   const postsToShow = posts.slice(0, BLOG.postsPerPage)
@@ -33,17 +21,16 @@ export async function getStaticProps() {
     props: {
       page: 1, // 当前是第1页
       postsToShow,
-      showNext,
-      blockMap
+      showNext
     },
     revalidate: 1 // 启用ISR，每秒重新验证
   }
 }
 
-const Notes = ({ postsToShow, page, showNext, blockMap }) => {
+const Notes = ({ postsToShow, page, showNext }) => {
   return (
     <Container title={`笔记 - ${BLOG.title}`} description="个人学习与成长的笔记集合">
-      <NotesHero blockMap={blockMap} />
+      <NotesHero />
       {postsToShow.map((post) => (
         <BlogPost key={post.id} post={post} />
       ))}
