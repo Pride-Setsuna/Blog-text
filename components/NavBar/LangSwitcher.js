@@ -1,21 +1,70 @@
 import { TranslateIcon } from '@heroicons/react/outline'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useState, useRef, useEffect } from 'react'
 
 const LangSwitcher = () => {
   const { locale, asPath } = useRouter()
+  const [showMenu, setShowMenu] = useState(false)
+  const menuRef = useRef(null)
+
+  // 语言配置
+  const languages = [
+    { code: 'zh', name: '中文' },
+    { code: 'en', name: 'English' },
+    { code: 'ja', name: '日本語' }
+  ]
+
+  // 点击外部关闭菜单
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setShowMenu(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [menuRef])
 
   return (
-    <>
-      <Link passHref href={asPath} locale={locale === 'en' ? 'zh' : 'en'} scroll={false}>
-        <button
-          aria-label='LangSwitcher'
-          className='p-2 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer rounded-lg dark:text-gray-100'
-        >
-          <TranslateIcon className='h-5 w-5' />
-        </button>
-      </Link>
-    </>
+    <div className="relative" ref={menuRef}>
+      <button
+        aria-label='LangSwitcher'
+        onClick={() => setShowMenu(!showMenu)}
+        className='p-2 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer rounded-lg dark:text-gray-100'
+      >
+        <TranslateIcon className='h-5 w-5' />
+      </button>
+      
+      {showMenu && (
+        <div className="absolute right-0 mt-2 w-28 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 z-10">
+          <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="language-menu">
+            {languages.map((lang) => (
+              <Link 
+                key={lang.code} 
+                href={asPath} 
+                locale={lang.code} 
+                scroll={false}
+                onClick={() => setShowMenu(false)}
+              >
+                <div 
+                  className={`block px-4 py-2 text-sm cursor-pointer ${
+                    locale === lang.code 
+                      ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white' 
+                      : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                  }`}
+                  role="menuitem"
+                >
+                  {lang.name}
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
   )
 }
 
