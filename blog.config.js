@@ -19,13 +19,8 @@ const BLOG = {
     newsletter: true,
     notes: true,
     projects: true,
-    contact: true,
-    books: true,
-    friends: true,
-    music: true,
-    record: true,
+    contact: true
   },
-  showWeChatPay: false,
   previewImagesEnabled: true,
   autoCollapsedNavBar: false, // The automatically collapsed navigation bar 
   ogImageGenerateHost: 'og-zl.vercel.app', // The link to generate OG image, don't end with a slash
