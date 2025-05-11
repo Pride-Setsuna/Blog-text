@@ -5,13 +5,14 @@ const NotionAvatar = (props) => (
   <div className={props.className} style={{
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'flex-end',
+    height: '100%'
   }}>
     <img
       src="/図2.png"
       alt="头像"
       style={{
-        maxWidth: '100%',
+        maxWidth: '85%',
         height: 'auto'
       }}
     />
