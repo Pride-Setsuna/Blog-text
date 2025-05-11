@@ -1,20 +1,18 @@
 import Container from '@/components/Container'
-import NotePost from '@/components/NotePost'
+import BlogPost from '@/components/BlogPost'
 import NotesHero from '@/components/Hero/Notes'
-import { getBlocksMaps } from '@/lib/getBlocksMaps'
-import { getPostBlocks, getAllPosts } from '@/lib/notion'
+import Pagination from '@/components/Pagination'
+import { getAllPosts, getPostBlocks } from '@/lib/notion'
+import BLOG from '@/blog.config'
 
 export async function getStaticProps() {
-  const { pagesJson, siteConfigObj } = await getBlocksMaps()
+  // 获取所有带有 tag:notes 标签的文章
+  const posts = await getAllPosts({ 
+    onlyPost: true,
+    tagFilter: 'notes' // 假设我们在Notion中用"notes"标签标记笔记类文章
+  })
 
-  const blocksJson = pagesJson
-  // Hide table header and home page on Archive page.
-  for (let i = 0; i < blocksJson.length; i++) {
-    const deleteTitleBlock = blocksJson[i].title === 'Title' ? blocksJson.splice(i, i + 1) : blocksJson
-    const deleteIndexBlock = blocksJson[i].slug === 'index' ? blocksJson.splice(i, i + 1) : blocksJson
-    console.log('[INFO] Hide Craft Table Header: ', deleteTitleBlock.length, deleteIndexBlock.length)
-  }
-
+  // 获取页面标题区域的内容（Hero区块）
   const heros = await getAllPosts({ onlyHidden: true })
   const hero = heros.find((t) => t.slug === 'notes')
 
@@ -23,30 +21,33 @@ export async function getStaticProps() {
     blockMap = await getPostBlocks(hero.id)
   } catch (err) {
     console.error(err)
-    // return { props: { post: null, blockMap: null } }
+    // 错误处理
   }
 
+  // 分页处理
+  const postsToShow = posts.slice(0, BLOG.postsPerPage)
+  const totalPosts = posts.length
+  const showNext = totalPosts > BLOG.postsPerPage
+  
   return {
     props: {
-      blocksJson,
-      siteConfigObj,
+      page: 1, // 当前是第1页
+      postsToShow,
+      showNext,
       blockMap
     },
-    revalidate: 1
+    revalidate: 1 // 启用ISR，每秒重新验证
   }
 }
 
-const Notes = ({ blocksJson, siteConfigObj, blockMap }) => {
+const Notes = ({ postsToShow, page, showNext, blockMap }) => {
   return (
-    <Container
-      title={siteConfigObj['Site Name']}
-      description={siteConfigObj['Site Description']}
-      siteConfigObj={siteConfigObj}
-    >
+    <Container title={`笔记 - ${BLOG.title}`} description="个人学习与成长的笔记集合">
       <NotesHero blockMap={blockMap} />
-      {blocksJson.map((block) => (
-        <NotePost key={block.slug} note={block} />
+      {postsToShow.map((post) => (
+        <BlogPost key={post.id} post={post} />
       ))}
+      {showNext && <Pagination page={page} showNext={showNext} />}
     </Container>
   )
 }
