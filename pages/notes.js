@@ -5,11 +5,12 @@ import Pagination from '@/components/Pagination'
 import { getAllPosts } from '@/lib/notion'
 import BLOG from '@/blog.config'
 
-export async function getStaticProps() {
-  // 获取所有带有 tag:notes 标签的文章
+export async function getStaticProps({ locale }) {
+  // 获取所有带有 tag:notes 标签的文章，并根据当前语言过滤
   const posts = await getAllPosts({ 
     onlyPost: true,
-    tagFilter: 'notes' // 假设我们在Notion中用"notes"标签标记笔记类文章
+    tagFilter: 'notes', // 假设我们在Notion中用"notes"标签标记笔记类文章
+    locale: locale || '' // 根据当前语言过滤
   })
 
   // 分页处理
