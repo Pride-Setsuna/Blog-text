@@ -2,39 +2,20 @@
 import * as React from 'react'
 
 const NotionAvatar = (props) => (
-  <svg
-    style={{
-      justifyContent: 'center',
-      alignSelf: 'center'
-    }}
-    viewBox="0 0 500 500"
-    xmlns="http://www.w3.org/2000/svg"
-    fill="currentColor"
-    {...props}
-  >
-    {/* 这里是电脑前的人物SVG */}
-    <path
-      d="M250 30C116.3 30 8 138.3 8 272s108.3 242 242 242 242-108.3 242-242S383.7 30 250 30zm-52.7 364.5c-3.2-3-4.4-7.9-2.7-13.2 9.4-30.8 14.9-57 16.5-78.4-36.9-4-56.1-16.8-56.1-16.8s35.4-35.4 108.3-35.4c47.2 0 73.2 9.5 89.7 17.5-2.7-12.5-14.6-60.1-51.2-73.3-11.8-4.3-24.1-3.9-36-1.1-7.8 1.8-16.3 5.4-25.3 11.1-10.4 6.6-21.2 15.9-31.7 28.6 0 0-13.6-27.7 2.6-57.3 11.3-20.7 32.2-32.2 63.9-35 52.1-4.6 95.9 19.3 125.2 68.1 34.6 57.5 17.4 137.7 17.4 137.7s21.4 6.7 12.7 20-110 47-111.9 48-50.2-4.3-121.4-20.5z"
-      fill="currentColor"
+  <div className={props.className} style={{
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  }}>
+    <img
+      src="/図2.png"
+      alt="头像"
+      style={{
+        maxWidth: '100%',
+        height: 'auto'
+      }}
     />
-    
-    {/* 这里是笔记本电脑部分 */}
-    <path
-      d="M280 300c-8.3 0-15 6.7-15 15v70c0 8.3 6.7 15 15 15h140c8.3 0 15-6.7 15-15v-70c0-8.3-6.7-15-15-15H280zm-5 105H145c-2.8 0-5-2.2-5-5s2.2-5 5-5h130c2.8 0 5 2.2 5 5s-2.2 5-5 5zm145 0h-10c-2.8 0-5-2.2-5-5s2.2-5 5-5h10c2.8 0 5 2.2 5 5s-2.2 5-5 5z"
-      fill="currentColor"
-    />
-    
-    {/* 苹果标志和贴纸 */}
-    <circle cx="350" cy="350" r="10" fill="currentColor" />
-    <path
-      d="M330 330c0 1.1-.9 2-2 2h-30c-1.1 0-2-.9-2-2v-10c0-1.1.9-2 2-2h30c1.1 0 2 .9 2 2v10z"
-      fill="currentColor"
-    />
-    <path
-      d="M390 345c0 1.1-.9 2-2 2h-20c-1.1 0-2-.9-2-2v-15c0-1.1.9-2 2-2h20c1.1 0 2 .9 2 2v15z"
-      fill="currentColor"
-    />
-  </svg>
+  </div>
 )
 
 export default NotionAvatar
