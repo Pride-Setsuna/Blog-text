@@ -1,37 +1,37 @@
 import Container from '@/components/Container'
 import BlogPost from '@/components/BlogPost'
-import NotesHero from '@/components/Hero/Notes'
+import ProjectsHero from '@/components/Hero/Projects'
 import Pagination from '@/components/Pagination'
 import { getAllPosts, getPostBlocks } from '@/lib/notion'
 import BLOG from '@/blog.config'
 
 export async function getStaticProps({ locale }) {
-  // 获取所有带有 tag:notes 标签的文章，并根据当前语言过滤
+  // 获取所有带有 type:Projects 类型的文章，并根据当前语言过滤
   const posts = await getAllPosts({ 
     onlyPost: true,
-    tagFilter: 'notes', // 假设我们在Notion中用"notes"标签标记笔记类文章
+    tagFilter: 'projects', // 假设我们在Notion中用"projects"标签标记项目类文章
     locale: locale || '' // 根据当前语言过滤
   })
 
-  // 获取隐藏的笔记页面内容
+  // 获取隐藏的项目页面内容
   const heros = await getAllPosts({ onlyHidden: true })
   
-  // 根据当前语言获取对应的笔记页面内容
+  // 根据当前语言获取对应的项目页面内容
   let hero
   if (locale === 'en') {
-    // 英文笔记页面
-    hero = heros.find((t) => t.slug === 'notes-en')
+    // 英文项目页面
+    hero = heros.find((t) => t.slug === 'projects-en')
   } else if (locale === 'ja') {
-    // 日文笔记页面
-    hero = heros.find((t) => t.slug === 'notes-ja')
+    // 日文项目页面
+    hero = heros.find((t) => t.slug === 'projects-ja')
   } else {
-    // 默认中文笔记页面
-    hero = heros.find((t) => t.slug === 'notes')
+    // 默认中文项目页面
+    hero = heros.find((t) => t.slug === 'projects')
   }
 
-  // 如果找不到特定语言的笔记页面，则使用默认笔记页面
+  // 如果找不到特定语言的项目页面，则使用默认项目页面
   if (!hero) {
-    hero = heros.find((t) => t.slug === 'notes')
+    hero = heros.find((t) => t.slug === 'projects')
   }
 
   let blockMap
@@ -39,13 +39,13 @@ export async function getStaticProps({ locale }) {
     blockMap = await getPostBlocks(hero.id)
   } catch (err) {
     console.error(err)
-    // 发生错误时，尝试获取默认笔记页面
-    const defaultHero = heros.find((t) => t.slug === 'notes')
+    // 发生错误时，尝试获取默认项目页面
+    const defaultHero = heros.find((t) => t.slug === 'projects')
     if (defaultHero) {
       try {
         blockMap = await getPostBlocks(defaultHero.id)
       } catch (error) {
-        console.error('Failed to fetch default notes hero content', error)
+        console.error('Failed to fetch default projects hero content', error)
       }
     }
   }
@@ -66,10 +66,10 @@ export async function getStaticProps({ locale }) {
   }
 }
 
-const Notes = ({ postsToShow, page, showNext, blockMap }) => {
+const Projects = ({ postsToShow, page, showNext, blockMap }) => {
   return (
-    <Container title={`笔记 - ${BLOG.title}`} description="个人学习与成长的笔记集合">
-      <NotesHero blockMap={blockMap} />
+    <Container title={`项目 - ${BLOG.title}`} description="我的个人和专业项目集合">
+      <ProjectsHero blockMap={blockMap} />
       {postsToShow.map((post) => (
         <BlogPost key={post.id} post={post} />
       ))}
@@ -78,4 +78,4 @@ const Notes = ({ postsToShow, page, showNext, blockMap }) => {
   )
 }
 
-export default Notes
+export default Projects 

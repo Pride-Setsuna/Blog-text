@@ -4,7 +4,7 @@ import Social from '../Common/Social.js'
 import Avatar from './NotionAvatar.js'
 import { NotionRenderer } from 'react-notion-x'
 
-const NotesHero = ({ blockMap }) => {
+const ProjectsHero = ({ blockMap }) => {
   const { locale } = useRouter()
   const t = lang[locale]
 
@@ -13,36 +13,36 @@ const NotesHero = ({ blockMap }) => {
     if (locale === 'en') {
       return (
         <div>
-          <h1 className="text-3xl font-bold mb-2">Notes</h1>
-          <p className="mb-4">My learning notes and knowledge sharing</p>
+          <h1 className="text-3xl font-bold mb-2">Projects</h1>
+          <p className="mb-4">Collection of my personal and professional projects</p>
           <ul className="list-disc ml-5 mb-4">
-            <li className="mb-2">Technical tutorials</li>
-            <li className="mb-2">Learning summaries</li>
-            <li className="mb-2">Tips and tricks</li>
+            <li className="mb-2">Web development</li>
+            <li className="mb-2">Mobile applications</li>
+            <li className="mb-2">Open source contributions</li>
           </ul>
         </div>
       )
     } else if (locale === 'ja') {
       return (
         <div>
-          <h1 className="text-3xl font-bold mb-2">ノート</h1>
-          <p className="mb-4">私の学習ノートと知識共有</p>
+          <h1 className="text-3xl font-bold mb-2">プロジェクト</h1>
+          <p className="mb-4">個人やプロフェッショナルなプロジェクトのコレクション</p>
           <ul className="list-disc ml-5 mb-4">
-            <li className="mb-2">技術的なチュートリアル</li>
-            <li className="mb-2">学習のまとめ</li>
-            <li className="mb-2">ヒントとコツ</li>
+            <li className="mb-2">ウェブ開発</li>
+            <li className="mb-2">モバイルアプリケーション</li>
+            <li className="mb-2">オープンソースへの貢献</li>
           </ul>
         </div>
       )
     } else {
       return (
         <div>
-          <h1 className="text-3xl font-bold mb-2">笔记</h1>
-          <p className="mb-4">我的学习笔记和知识分享</p>
+          <h1 className="text-3xl font-bold mb-2">项目</h1>
+          <p className="mb-4">我的个人和专业项目集合</p>
           <ul className="list-disc ml-5 mb-4">
-            <li className="mb-2">技术教程</li>
-            <li className="mb-2">学习总结</li>
-            <li className="mb-2">技巧和窍门</li>
+            <li className="mb-2">网页开发</li>
+            <li className="mb-2">移动应用</li>
+            <li className="mb-2">开源贡献</li>
           </ul>
         </div>
       )
@@ -73,4 +73,4 @@ const NotesHero = ({ blockMap }) => {
   )
 }
 
-export default NotesHero
+export default ProjectsHero 
