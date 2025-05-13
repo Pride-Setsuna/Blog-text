@@ -34,14 +34,19 @@ export async function getStaticProps({ locale }) {
     hero = heros.find((t) => t.slug === 'notes')
   }
 
-  let blockMap
+  let blockMap = null
   try {
-    blockMap = await getPostBlocks(hero.id)
+    // 添加额外的安全检查
+    if (hero && hero.id) {
+      blockMap = await getPostBlocks(hero.id)
+    } else {
+      console.warn('No hero page found for notes')
+    }
   } catch (err) {
     console.error(err)
     // 发生错误时，尝试获取默认笔记页面
     const defaultHero = heros.find((t) => t.slug === 'notes')
-    if (defaultHero) {
+    if (defaultHero && defaultHero.id) {
       try {
         blockMap = await getPostBlocks(defaultHero.id)
       } catch (error) {
@@ -60,7 +65,7 @@ export async function getStaticProps({ locale }) {
       page: 1, // 当前是第1页
       postsToShow,
       showNext,
-      blockMap
+      blockMap // 可能为 null，但这是可以序列化的
     },
     revalidate: 1 // 启用ISR，每秒重新验证
   }
