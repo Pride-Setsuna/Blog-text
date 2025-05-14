@@ -4,6 +4,8 @@ const BLOG = {
   email: 'gao-yiqian@outlook.com',
   link: 'https://www.shintetu.com',
   newsletter: 'Weekly',
+  notes: 'Notes',
+  projects: 'Project',
   description: 'Dream it. Chase it. Code it.',
   lang: 'zh', // ['zh', 'en'] 
   timezone: 'Asia/Tokyo', // See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for all options.

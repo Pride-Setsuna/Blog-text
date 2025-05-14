@@ -56,10 +56,22 @@ export async function getStaticProps({ params: { slug }, locale }) {
   // 日文使用 "about-ja"
   
   let targetSlug = slug
-  if (locale === 'en' && slug === 'about') {
-    targetSlug = 'about-en'
-  } else if (locale === 'ja' && slug === 'about') {
-    targetSlug = 'about-ja'
+  if (locale === 'en') {
+    if (slug === 'about') {
+      targetSlug = 'about-en'
+    } else if (slug === 'notes') {
+      targetSlug = 'notes-en'
+    } else if (slug === 'projects') {
+      targetSlug = 'projects-en'
+    }
+  } else if (locale === 'ja') {
+    if (slug === 'about') {
+      targetSlug = 'about-ja'
+    } else if (slug === 'notes') {
+      targetSlug = 'notes-ja'
+    } else if (slug === 'projects') {
+      targetSlug = 'projects-ja'
+    }
   }
   
   const posts = await getAllPosts({ onlyNewsletter: false })
