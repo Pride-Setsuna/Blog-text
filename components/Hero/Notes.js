@@ -7,7 +7,7 @@ import { useRouter } from 'next/router'
 import { NewspaperIcon, ClipboardCheckIcon } from '@heroicons/react/outline'
 import NotionRenderer from '@/components/Post/NotionRenderer'
 
-const NewsletterHero = ({ blockMap }) => {
+const NotesHero = ({ blockMap }) => {
   const [showCopied, setShowCopied] = useState(false)
   const { locale } = useRouter()
   const t = lang[locale]
@@ -100,4 +100,4 @@ const NewsletterHero = ({ blockMap }) => {
   )
 }
 
-export default NewsletterHero
+export default NotesHero
