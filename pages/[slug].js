@@ -58,7 +58,7 @@ export async function getStaticProps({ params: { slug }, locale }) {
   let targetSlug = slug
   if (locale === 'en') {
     if (slug === 'about') {
-      targetSlug = 'about-en'
+    targetSlug = 'about-en'
     } else if (slug === 'notes') {
       targetSlug = 'notes-en'
     } else if (slug === 'projects') {
@@ -66,7 +66,7 @@ export async function getStaticProps({ params: { slug }, locale }) {
     }
   } else if (locale === 'ja') {
     if (slug === 'about') {
-      targetSlug = 'about-ja'
+    targetSlug = 'about-ja'
     } else if (slug === 'notes') {
       targetSlug = 'notes-ja'
     } else if (slug === 'projects') {
