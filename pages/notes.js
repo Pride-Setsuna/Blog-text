@@ -5,25 +5,44 @@ import { getAllPosts, getPostBlocks } from '@/lib/notion'
 import BLOG from '@/blog.config'
 
 export async function getStaticProps() {
-  const posts = await getAllPosts({ onlyNotes: true })
-
-  const heros = await getAllPosts({ onlyHidden: true })
-  const hero = heros.find((t) => t.slug === 'notes')
-
-  let blockMap
   try {
-    blockMap = await getPostBlocks(hero.id)
-  } catch (err) {
-    console.error(err)
-    // return { props: { post: null, blockMap: null } }
-  }
-
-  return {
-    props: {
-      posts,
-      blockMap
-    },
-    revalidate: 1
+    // 尝试获取文章
+    const posts = await getAllPosts({ onlyNotes: true });
+    
+    // 尝试获取hero内容
+    let hero = null;
+    let blockMap = null;
+    
+    try {
+      const heros = await getAllPosts({ onlyHidden: true });
+      hero = heros.find((t) => t.slug === 'notes');
+      
+      if (hero) {
+        blockMap = await getPostBlocks(hero.id);
+      }
+    } catch (heroError) {
+      console.error('获取hero内容时出错:', heroError);
+      // 继续执行，不中断构建
+    }
+    
+    // 确保返回有效数据
+    return {
+      props: {
+        posts: posts || [],
+        blockMap: blockMap || null
+      },
+      revalidate: 1
+    };
+  } catch (error) {
+    console.error('getStaticProps整体错误:', error);
+    // 返回最小有效数据，确保构建不会失败
+    return {
+      props: {
+        posts: [],
+        blockMap: null
+      },
+      revalidate: 1
+    };
   }
 }
 
@@ -31,7 +50,7 @@ const notes = ({ posts, blockMap }) => {
   return (
     <Container title={BLOG.notes} description={BLOG.description}>
       <NotesHero blockMap={blockMap} />
-      {posts.map((post) => (
+      {posts?.map((post) => (
         <BlogPost key={post.id} post={post} />
       ))}
     </Container>

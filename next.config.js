@@ -4,9 +4,7 @@ module.exports = {
     defaultLocale: 'zh',
     localeDetection: true
   },
-  experimental: {
-    outputStandalone: true,
-  },
+  output: 'standalone',
   transpilePackages: ['dayjs'],
   images: {
     domains: ['www.notion.so', 'images.unsplash.com', 's3.us-west-2.amazonaws.com']
@@ -26,6 +24,5 @@ module.exports = {
   },
   async rewrites() {
     return []
-  },
-  output: 'standalone'
+  }
 }
