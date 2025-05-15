@@ -5,7 +5,7 @@ import { getAllPosts, getPostBlocks } from '@/lib/notion'
 import BLOG from '@/blog.config'
 
 export async function getStaticProps({ locale }) {
-  const posts = await getAllPosts({ onlyNotes: true })
+  const posts = await getAllPosts({ onlyNotes: true, locale })
 
   const heros = await getAllPosts({ onlyHidden: true })
   let hero
