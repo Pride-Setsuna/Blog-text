@@ -61,7 +61,7 @@ const LangSwitcher = ({ showLangMenu, setShowLangMenu, showMenu, setShowMenu }) 
           <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="language-menu">
             {languages.map((lang) => {
               // 只在文章详情页做特殊处理
-              if (pathname.startsWith('/[slug]')) {
+              if (query.slug) {
                 // 文章详情页
                 return (
                   <div
@@ -74,17 +74,11 @@ const LangSwitcher = ({ showLangMenu, setShowLangMenu, showMenu, setShowMenu }) 
                     role="menuitem"
                     onClick={async () => {
                       setShowLangMenu(false)
-                      // 生成目标slug
-                      let targetSlug = query.slug
-                      if (lang.code === 'en') {
-                        if (targetSlug === 'about') targetSlug = 'about-en'
-                        else if (targetSlug === 'notes') targetSlug = 'notes-en'
-                        else if (targetSlug === 'projects') targetSlug = 'projects-en'
-                      } else if (lang.code === 'ja') {
-                        if (targetSlug === 'about') targetSlug = 'about-ja'
-                        else if (targetSlug === 'notes') targetSlug = 'notes-ja'
-                        else if (targetSlug === 'projects') targetSlug = 'projects-ja'
-                      }
+                      // 统一 slug 组名（去除 -en/-ja 后缀）
+                      let baseSlug = query.slug.replace(/(-en|-ja)$/,'')
+                      let targetSlug = baseSlug
+                      if (lang.code === 'en') targetSlug = `${baseSlug}-en`
+                      else if (lang.code === 'ja') targetSlug = `${baseSlug}-ja`
                       // 检查是否有对应slug的文章
                       const res = await fetch(`/api/check-slug?slug=${targetSlug}`)
                       const data = await res.json()
