@@ -179,13 +179,17 @@ const Header = ({ navBarTitle, fullWidth }) => {
     const observer = new window.IntersectionObserver(handler)
     observer.observe(sentinelEl)
 
-    window.addEventListener('scroll', () => {
-      if (window.pageYOffset > 400) {
-        setShowMenu(true)
-      } else {
-        setShowMenu(false)
+    // 只在桌面端自动展开菜单栏
+    const handleScroll = () => {
+      if (window.innerWidth >= 768) { // md断点
+        if (window.pageYOffset > 400) {
+          setShowMenu(true)
+        } else {
+          setShowMenu(false)
+        }
       }
-    })
+    }
+    window.addEventListener('scroll', handleScroll)
 
     const handleRouteChange = () => {
       setShowMenu(false)
@@ -194,6 +198,7 @@ const Header = ({ navBarTitle, fullWidth }) => {
     router.events.on('routeChangeStart', handleRouteChange)
     return () => {
       sentinelEl && observer.unobserve(sentinelEl)
+      window.removeEventListener('scroll', handleScroll)
       router.events.off('routeChangeStart', handleRouteChange)
     }
   }, [handler, sentinelRef, router])
