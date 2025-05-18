@@ -6,6 +6,7 @@ const BLOG = {
   newsletter: 'Weekly',
   notes: 'Notes',
   projects: 'Project',
+  book: 'Book',
   description: 'Dream it. Chase it. Code it.',
   lang: 'zh', // ['zh', 'en'] 
   timezone: 'Asia/Tokyo', // See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for all options.
@@ -21,7 +22,7 @@ const BLOG = {
     newsletter: true,
     notes: true,
     projects: true,
-    contact: true
+    book: true,
   },
   previewImagesEnabled: true,
   autoCollapsedNavBar: false, // The automatically collapsed navigation bar 
