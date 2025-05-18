@@ -41,7 +41,7 @@ const Page404 = ({ statusCode }) => {
           <Link
             href='/contact'
             scroll={false}
-            className='inline-block bg-blue-200 dark:bg-blue-700 hover:bg-blue-300 dark:hover:bg-blue-600 text-sm md:text-base font-semibold text-center rounded-lg outline-none px-8 py-3 mb-4'
+            className='inline-block bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-sm md:text-base font-semibold text-center rounded-lg outline-none px-8 py-3 mb-4'
           >
             {t.LAYOUT.NOTICE_BUTTON}
           </Link>
