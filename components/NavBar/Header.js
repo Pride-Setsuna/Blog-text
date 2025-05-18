@@ -58,6 +58,36 @@ const NavBar = ({ showMenu, setShowMenu, showLangMenu, setShowLangMenu }) => {
       show: true
     }
   ]
+
+  const navMenuRef = useRef(null);
+
+  // 点击空白处关闭菜单栏
+  useEffect(() => {
+    if (!showMenu) return;
+    const handleClickOutside = (event) => {
+      if (navMenuRef.current && !navMenuRef.current.contains(event.target)) {
+        setShowMenu(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showMenu, setShowMenu]);
+
+  // 滚动时自动关闭菜单栏和语言切换器
+  useEffect(() => {
+    if (!showMenu && !showLangMenu) return;
+    const handleScroll = () => {
+      setShowMenu(false);
+      setShowLangMenu(false);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [showMenu, showLangMenu, setShowMenu, setShowLangMenu]);
+
   return (
     <motion.div className='flex'>
       {/* Desktop Menu */}
@@ -88,7 +118,7 @@ const NavBar = ({ showMenu, setShowMenu, showLangMenu, setShowLangMenu }) => {
       </div>
 
       {/* Mobile Phone Menu */}
-      <div className='md:hidden mr-2 block '>
+      <div className='md:hidden mr-2 block ' ref={navMenuRef}>
         <button
           type='button' aria-label='Menu'
           onClick={() => {

@@ -27,6 +27,18 @@ const LangSwitcher = ({ showLangMenu, setShowLangMenu, showMenu, setShowMenu }) 
     }
   }, [menuRef, setShowLangMenu])
 
+  // 滚动时自动关闭语言切换器
+  useEffect(() => {
+    if (!showLangMenu) return;
+    const handleScroll = () => {
+      setShowLangMenu(false);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [showLangMenu, setShowLangMenu]);
+
   return (
     <div className="relative inline-block" ref={menuRef}>
       <button
