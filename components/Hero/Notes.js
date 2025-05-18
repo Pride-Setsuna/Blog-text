@@ -6,6 +6,7 @@ import { lang } from '@/lib/lang'
 import { useRouter } from 'next/router'
 import { NewspaperIcon, ClipboardCheckIcon } from '@heroicons/react/outline'
 import NotionRenderer from '@/components/Post/NotionRenderer'
+import { CollectionIcon } from '@heroicons/react/outline'
 
 const NotesHero = ({ blockMap }) => {
   const [showCopied, setShowCopied] = useState(false)
@@ -93,7 +94,7 @@ const NotesHero = ({ blockMap }) => {
           </div> */}
         </div>
         <div className='w-1/5 ml-4'>
-          <NewspaperIcon className='object-cover object-center text-gray-500 dark:text-gray-300' />
+          <CollectionIcon className='object-cover object-center text-gray-500 dark:text-gray-300' />
         </div>
       </div>
     </>

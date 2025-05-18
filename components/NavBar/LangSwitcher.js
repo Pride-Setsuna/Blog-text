@@ -3,9 +3,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState, useRef, useEffect } from 'react'
 
-const LangSwitcher = () => {
+const LangSwitcher = ({ showLangMenu, setShowLangMenu, showMenu, setShowMenu }) => {
   const { locale, asPath } = useRouter()
-  const [showMenu, setShowMenu] = useState(false)
   const menuRef = useRef(null)
 
   // 语言配置
@@ -19,26 +18,31 @@ const LangSwitcher = () => {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setShowMenu(false)
+        setShowLangMenu(false)
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
     return () => {
       document.removeEventListener('mousedown', handleClickOutside)
     }
-  }, [menuRef])
+  }, [menuRef, setShowLangMenu])
 
   return (
     <div className="relative inline-block" ref={menuRef}>
       <button
         aria-label='LangSwitcher'
-        onClick={() => setShowMenu(!showMenu)}
+        onClick={() => {
+          setShowLangMenu((prev) => {
+            if (!prev) setShowMenu(false)
+            return !prev
+          })
+        }}
         className='p-2 ml-1 hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer rounded-lg dark:text-gray-100'
       >
         <TranslateIcon className='h-5 w-5' />
       </button>
       
-      {showMenu && (
+      {showLangMenu && (
         <div className="absolute right-0 mt-2 w-28 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 z-10">
           <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="language-menu">
             {languages.map((lang) => (
@@ -47,7 +51,7 @@ const LangSwitcher = () => {
                 href={asPath} 
                 locale={lang.code} 
                 scroll={false}
-                onClick={() => setShowMenu(false)}
+                onClick={() => setShowLangMenu(false)}
               >
                 <div 
                   className={`block px-4 py-2 text-sm cursor-pointer ${

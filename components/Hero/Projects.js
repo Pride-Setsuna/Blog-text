@@ -4,7 +4,7 @@ import Social from '../Common/Social.js'
 import { useState } from 'react'
 import { lang } from '@/lib/lang'
 import { useRouter } from 'next/router'
-import { NewspaperIcon, ClipboardCheckIcon } from '@heroicons/react/outline'
+import { NewspaperIcon, ClipboardCheckIcon, SparklesIcon } from '@heroicons/react/outline'
 import NotionRenderer from '@/components/Post/NotionRenderer'
 
 const ProjectsHero = ({ blockMap }) => {
@@ -93,7 +93,7 @@ const ProjectsHero = ({ blockMap }) => {
           </div> */}
         </div>
         <div className='w-1/5 ml-4'>
-          <NewspaperIcon className='object-cover object-center text-gray-500 dark:text-gray-300' />
+          <SparklesIcon className='object-cover object-center text-gray-500 dark:text-gray-300' />
         </div>
       </div>
     </>

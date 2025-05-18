@@ -16,11 +16,10 @@ import LangSwitcher from './LangSwitcher.js'
 import Logo from '@/components/Common/Logo'
 import { motion } from 'framer-motion'
 
-const NavBar = () => {
+const NavBar = ({ showMenu, setShowMenu, showLangMenu, setShowLangMenu }) => {
   const router = useRouter()
   const { locale } = useRouter()
   const t = lang[locale]
-  const [showMenu, setShowMenu] = useState(false)
 
   let activeMenu = ''
   if (router.query.slug) {
@@ -85,14 +84,19 @@ const NavBar = () => {
 
       <div className='nav-func-btn flex items-center'>
         <ThemeSwitcher />
-        <LangSwitcher />
+        <LangSwitcher showLangMenu={showLangMenu} setShowLangMenu={setShowLangMenu} showMenu={showMenu} setShowMenu={setShowMenu} />
       </div>
 
       {/* Mobile Phone Menu */}
       <div className='md:hidden mr-2 block '>
         <button
           type='button' aria-label='Menu'
-          onClick={() => setShowMenu((showMenu) => !showMenu)}
+          onClick={() => {
+            setShowMenu((prev) => {
+              if (!prev) setShowLangMenu(false)
+              return !prev
+            })
+          }}
           className='hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer rounded-lg block p-2 -mr-3 md:pb-3'
         >
           <MenuIcon className='inline-block mb-1 h-5 w-5' />
@@ -126,7 +130,8 @@ const NavBar = () => {
 }
 
 const Header = ({ navBarTitle, fullWidth }) => {
-  const [showTitle, setShowTitle] = useState(false)
+  const [showMenu, setShowMenu] = useState(false)
+  const [showLangMenu, setShowLangMenu] = useState(false)
   const useSticky = !BLOG.autoCollapsedNavBar
   const navRef = useRef(/** @type {HTMLDivElement} */ undefined)
   const sentinelRef = useRef(/** @type {HTMLDivElement} */ undefined)
@@ -137,6 +142,7 @@ const Header = ({ navBarTitle, fullWidth }) => {
       navRef.current?.classList.add('remove-sticky')
     }
   }, [useSticky])
+  const router = useRouter()
 
   useEffect(() => {
     const sentinelEl = sentinelRef.current
@@ -145,15 +151,22 @@ const Header = ({ navBarTitle, fullWidth }) => {
 
     window.addEventListener('scroll', () => {
       if (window.pageYOffset > 400) {
-        setShowTitle(true)
+        setShowMenu(true)
       } else {
-        setShowTitle(false)
+        setShowMenu(false)
       }
     })
+
+    const handleRouteChange = () => {
+      setShowMenu(false)
+      setShowLangMenu(false)
+    }
+    router.events.on('routeChangeStart', handleRouteChange)
     return () => {
       sentinelEl && observer.unobserve(sentinelEl)
+      router.events.off('routeChangeStart', handleRouteChange)
     }
-  }, [handler, sentinelRef])
+  }, [handler, sentinelRef, router])
   return (
     <>
       <div className='observer-element h-4 md:h-12' ref={sentinelRef}></div>
@@ -173,7 +186,7 @@ const Header = ({ navBarTitle, fullWidth }) => {
           {navBarTitle ? (
             <p
               className={`ml-2 font-medium ${
-                !showTitle ? 'hidden' : 'hidden xl:block'
+                !showMenu ? 'hidden' : 'hidden xl:block'
               }`}
             >
               {navBarTitle}
@@ -181,7 +194,7 @@ const Header = ({ navBarTitle, fullWidth }) => {
           ) : (
             <p
               className={`ml-2 font-medium ${
-                !showTitle ? 'hidden' : 'hidden xl:block'
+                !showMenu ? 'hidden' : 'hidden xl:block'
               }`}
             >
               {BLOG.title},{' '}
@@ -189,7 +202,7 @@ const Header = ({ navBarTitle, fullWidth }) => {
             </p>
           )}
         </div>
-        <NavBar />
+        <NavBar showMenu={showMenu} setShowMenu={setShowMenu} showLangMenu={showLangMenu} setShowLangMenu={setShowLangMenu} />
       </div>
     </>
   )
