@@ -17,6 +17,7 @@ const NotionAvatar = (props) => (
       }}
       draggable="false"
       onContextMenu={e => e.preventDefault()}
+      onTouchStart={e => e.preventDefault()}
     />
   </div>
 )
