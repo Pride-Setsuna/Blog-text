@@ -15,6 +15,8 @@ const NotionAvatar = (props) => (
         maxWidth: '85%',
         height: 'auto'
       }}
+      draggable="false"
+      onContextMenu={e => e.preventDefault()}
     />
   </div>
 )
