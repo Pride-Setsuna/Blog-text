@@ -41,9 +41,13 @@ const Page404 = ({ statusCode }) => {
           <Link
             href='/contact'
             scroll={false}
-            className='inline-block bg-blue-200 dark:bg-blue-700 hover:bg-blue-300 dark:hover:bg-blue-600 text-sm md:text-base font-semibold text-center rounded-lg outline-none px-8 py-3 mb-4'
           >
-            {t.LAYOUT.NOTICE_BUTTON}
+            <span
+              className='block mb-4 text-lg md:text-xl font-extrabold text-blue-600 dark:text-blue-400 tracking-wide cursor-pointer hover:underline'
+              style={{ letterSpacing: '0.05em' }}
+            >
+              联系我
+            </span>
           </Link>
           <Link
             href='/'
