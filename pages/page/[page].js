@@ -14,24 +14,20 @@ const Page = ({ postsToShow, page, showNext }) => {
   )
 }
 
+
 export async function getStaticProps(context) {
-  const page = parseInt(context.params.page) || 1
-  const posts = await getAllPosts({ onlyPost: true })
-
-  // 假设语言标签在 post.tags 数组中
-  const filteredPosts = posts.filter(post =>
-    post.tags && post.tags.includes(BLOG.lang)
-  )
-
-  const postsToShow = filteredPosts.slice(
+  const { page } = context.params // 当前页码
+  const locale = context.locale || ''
+  const posts = await getAllPosts({ onlyPost: true, locale })
+  const postsToShow = posts.slice(
     BLOG.postsPerPage * (page - 1),
     BLOG.postsPerPage * page
   )
-  const totalPosts = filteredPosts.length
+  const totalPosts = posts.length
   const showNext = page * BLOG.postsPerPage < totalPosts
   return {
     props: {
-      page,
+      page, // 当前页码
       postsToShow,
       showNext
     },
@@ -39,20 +35,22 @@ export async function getStaticProps(context) {
   }
 }
 
-export async function getStaticPaths() {
-  const posts = await getAllPosts({ onlyNewsletter: false })
 
-  // 假设语言标签在 post.tags 数组中
-  const filteredPosts = posts.filter(post =>
-    post.tags && post.tags.includes(BLOG.lang)
-  )
-
-  const totalPosts = filteredPosts.length
-  const totalPages = Math.ceil(totalPosts / BLOG.postsPerPage)
+export async function getStaticPaths({ locales }) {
+  let paths = []
+  for (const locale of locales) {
+    const posts = await getAllPosts({ onlyNewsletter: false, locale })
+    const totalPosts = posts.length
+    const totalPages = Math.ceil(totalPosts / BLOG.postsPerPage)
+    paths = paths.concat(
+      Array.from({ length: totalPages - 1 }, (_, i) => ({
+        params: { page: '' + (i + 2) },
+        locale
+      }))
+    )
+  }
   return {
-    paths: Array.from({ length: totalPages - 1 }, (_, i) => ({
-      params: { page: '' + (i + 2) }
-    })),
+    paths,
     fallback: true
   }
 }
