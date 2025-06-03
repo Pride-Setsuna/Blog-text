@@ -15,17 +15,20 @@ const Page = ({ postsToShow, page, showNext }) => {
 }
 
 export async function getStaticProps(context) {
-  const { page } = context.params // Get Current Page No.
+  const { page } = context.params
   const posts = await getAllPosts({ onlyPost: true })
-  const postsToShow = posts.slice(
+
+  const filteredPosts = posts.filter((post) => post.lang === BLOG.lang)
+
+  const postsToShow = filteredPosts.slice(
     BLOG.postsPerPage * (page - 1),
     BLOG.postsPerPage * page
   )
-  const totalPosts = posts.length
+  const totalPosts = filteredPosts.length
   const showNext = page * BLOG.postsPerPage < totalPosts
   return {
     props: {
-      page, // Current Page
+      page,
       postsToShow,
       showNext
     },
@@ -35,10 +38,12 @@ export async function getStaticProps(context) {
 
 export async function getStaticPaths() {
   const posts = await getAllPosts({ onlyNewsletter: false })
-  const totalPosts = posts.length
+
+  const filteredPosts = posts.filter((post) => post.lang === BLOG.lang)
+
+  const totalPosts = filteredPosts.length
   const totalPages = Math.ceil(totalPosts / BLOG.postsPerPage)
   return {
-    // remove first page, we 're not gonna handle that.
     paths: Array.from({ length: totalPages - 1 }, (_, i) => ({
       params: { page: '' + (i + 2) }
     })),
