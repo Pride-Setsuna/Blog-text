@@ -165,9 +165,12 @@ const Header = ({ navBarTitle, fullWidth }) => {
   const useSticky = !BLOG.autoCollapsedNavBar
   const navRef = useRef(/** @type {HTMLDivElement} */ undefined)
   const sentinelRef = useRef(/** @type {HTMLDivElement} */ undefined)
+  const [showTitle, setShowTitle] = useState(true)
   const handler = useCallback(([entry]) => {
     if (useSticky && navRef.current) {
       navRef.current?.classList.toggle('sticky-nav-full', !entry.isIntersecting)
+      // 顶部吸附时隐藏标题，否则显示
+      setShowTitle(entry.isIntersecting)
     } else {
       navRef.current?.classList.add('remove-sticky')
     }
@@ -218,11 +221,11 @@ const Header = ({ navBarTitle, fullWidth }) => {
             </div>
           </Link>
           {navBarTitle ? (
-            <p className="ml-2 font-medium hidden xl:block">
+            <p className={`ml-2 font-medium hidden xl:block transition-opacity duration-300 ${showTitle ? 'opacity-100' : 'opacity-0'}`}>
               {navBarTitle}
             </p>
           ) : (
-            <p className="ml-2 font-medium hidden xl:block">
+            <p className={`ml-2 font-medium hidden xl:block transition-opacity duration-300 ${showTitle ? 'opacity-100' : 'opacity-0'}`}>
               {BLOG.title},{' '}
               <span className='font-normal'>{BLOG.description}</span>
             </p>
