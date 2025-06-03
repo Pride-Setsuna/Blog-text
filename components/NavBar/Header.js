@@ -179,7 +179,6 @@ const Header = ({ navBarTitle, fullWidth }) => {
     const observer = new window.IntersectionObserver(handler)
     observer.observe(sentinelEl)
 
-    // 只在桌面端自动展开菜单栏
     const handleScroll = () => {
       if (window.innerWidth >= 768) { // md断点
         if (window.pageYOffset > 400) {
@@ -214,24 +213,16 @@ const Header = ({ navBarTitle, fullWidth }) => {
       >
         <div className='flex items-center'>
           <Link passHref href='/' scroll={false} aria-label={BLOG.title}>
-            <motion.div>
+            <div>
               <Logo className='h-6 hover:text-blue-500 dark:hover:text-blue-500 fill-current' />
-            </motion.div>
+            </div>
           </Link>
           {navBarTitle ? (
-            <p
-              className={`ml-2 font-medium ${
-                !showMenu ? 'hidden' : 'hidden xl:block'
-              }`}
-            >
+            <p className="ml-2 font-medium hidden xl:block">
               {navBarTitle}
             </p>
           ) : (
-            <p
-              className={`ml-2 font-medium ${
-                !showMenu ? 'hidden' : 'hidden xl:block'
-              }`}
-            >
+            <p className="ml-2 font-medium hidden xl:block">
               {BLOG.title},{' '}
               <span className='font-normal'>{BLOG.description}</span>
             </p>
