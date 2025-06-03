@@ -221,11 +221,11 @@ const Header = ({ navBarTitle, fullWidth }) => {
             </div>
           </Link>
           {navBarTitle ? (
-            <p className={`ml-2 font-medium hidden xl:block transition-opacity duration-300 ${showTitle ? 'opacity-100' : 'opacity-0'}`}>
+            <p className={`ml-2 font-medium hidden xl:block transition-opacity duration-300 ${showTitle ? 'opacity-0' : 'opacity-100'}`}>
               {navBarTitle}
             </p>
           ) : (
-            <p className={`ml-2 font-medium hidden xl:block transition-opacity duration-300 ${showTitle ? 'opacity-100' : 'opacity-0'}`}>
+            <p className={`ml-2 font-medium hidden xl:block transition-opacity duration-300 ${showTitle ? 'opacity-0' : 'opacity-100'}`}>
               {BLOG.title},{' '}
               <span className='font-normal'>{BLOG.description}</span>
             </p>
