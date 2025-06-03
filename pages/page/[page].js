@@ -15,10 +15,13 @@ const Page = ({ postsToShow, page, showNext }) => {
 }
 
 export async function getStaticProps(context) {
-  const { page } = context.params
+  const page = parseInt(context.params.page) || 1
   const posts = await getAllPosts({ onlyPost: true })
 
-  const filteredPosts = posts.filter((post) => post.lang === BLOG.lang)
+  // 假设语言标签在 post.tags 数组中
+  const filteredPosts = posts.filter(post =>
+    post.tags && post.tags.includes(BLOG.lang)
+  )
 
   const postsToShow = filteredPosts.slice(
     BLOG.postsPerPage * (page - 1),
@@ -39,7 +42,10 @@ export async function getStaticProps(context) {
 export async function getStaticPaths() {
   const posts = await getAllPosts({ onlyNewsletter: false })
 
-  const filteredPosts = posts.filter((post) => post.lang === BLOG.lang)
+  // 假设语言标签在 post.tags 数组中
+  const filteredPosts = posts.filter(post =>
+    post.tags && post.tags.includes(BLOG.lang)
+  )
 
   const totalPosts = filteredPosts.length
   const totalPages = Math.ceil(totalPosts / BLOG.postsPerPage)
