@@ -38,8 +38,6 @@ const Hero = ({ blockMap }) => {
     }, 1000)
   }
 
-
-
   return (
     <>
       <div className='container mx-auto flex px-5 py-2 mb-10 md:flex-row flex-col items-center'>
